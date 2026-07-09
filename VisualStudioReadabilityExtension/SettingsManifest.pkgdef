@@ -1,0 +1,6 @@
+// Registers the unified settings manifest for this extension so the settings render
+// natively in the VS Settings window (Ctrl+,) instead of the legacy Options dialog.
+[$RootKey$\SettingsManifests\{c7f2a1d4-9b3e-4c5a-8d67-2f1e0a9b8c7d}]
+@="VisualStudioReadabilityExtension.ReadabilityColorizerPackage"
+"ManifestPath"="$PackageFolder$\UnifiedSettings\visualStudioReadabilityExtension.registration.json"
+"CacheTag"=qword:08DEB077361F9765

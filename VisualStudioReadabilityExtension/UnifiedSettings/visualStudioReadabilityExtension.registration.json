@@ -1,0 +1,80 @@
+{
+  "$schema": "registration.schema.json",
+  "properties": {
+    "visualStudioReadabilityExtension.enabled": {
+      "title": "Enable block colouring",
+      "type": "boolean",
+      "default": true,
+      "order": 0
+    },
+    "visualStudioReadabilityExtension.backgroundColor": {
+      "title": "Code view background colour (hex, e.g. #000000)",
+      "type": "string",
+      "default": "#000000",
+      "order": 5
+    },
+    "visualStudioReadabilityExtension.opacityPercent": {
+      "title": "Opacity (%)",
+      "type": "integer",
+      "default": 15,
+      "minimum": 1,
+      "maximum": 100,
+      "order": 10
+    },
+    "visualStudioReadabilityExtension.depthLevels": {
+      "title": "Number of depths to colour (0 = all)",
+      "type": "integer",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 100,
+      "order": 30
+    },
+    "visualStudioReadabilityExtension.depthColor1": {
+      "title": "Depth 1 colour (hex) - cool grey",
+      "type": "string",
+      "default": "#90A4AE",
+      "order": 40
+    },
+    "visualStudioReadabilityExtension.depthColor2": {
+      "title": "Depth 2 colour (hex) - blue",
+      "type": "string",
+      "default": "#40C4FF",
+      "order": 50
+    },
+    "visualStudioReadabilityExtension.depthColor3": {
+      "title": "Depth 3 colour (hex) - green",
+      "type": "string",
+      "default": "#69F0AE",
+      "order": 60
+    },
+    "visualStudioReadabilityExtension.depthColor4": {
+      "title": "Depth 4 colour (hex) - amber",
+      "type": "string",
+      "default": "#FFD740",
+      "order": 70
+    },
+    "visualStudioReadabilityExtension.depthColor5": {
+      "title": "Depth 5 colour (hex) - orange",
+      "type": "string",
+      "default": "#FF6E40",
+      "order": 80
+    },
+    "visualStudioReadabilityExtension.depthColor6": {
+      "title": "Depth 6 colour (hex) - pink",
+      "type": "string",
+      "default": "#FF4081",
+      "order": 90
+    },
+    "visualStudioReadabilityExtension.depthColor7": {
+      "title": "Depth 7 colour (hex) - purple (then cycles)",
+      "type": "string",
+      "default": "#E040FB",
+      "order": 100
+    }
+  },
+  "categories": {
+    "visualStudioReadabilityExtension": {
+      "title": "VisualStudioReadabilityExtension"
+    }
+  }
+}
