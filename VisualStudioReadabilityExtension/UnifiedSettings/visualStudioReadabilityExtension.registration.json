@@ -29,6 +29,26 @@
       "maximum": 100,
       "order": 30
     },
+    "visualStudioReadabilityExtension.showActiveScope": {
+      "title": "Outline the active parenthesis pair ( ) containing the caret",
+      "type": "boolean",
+      "default": true,
+      "order": 32
+    },
+    "visualStudioReadabilityExtension.activeScopeColor": {
+      "title": "Active scope outline colour (hex, e.g. #FFFFFF)",
+      "type": "string",
+      "default": "#FFFFFF",
+      "order": 34
+    },
+    "visualStudioReadabilityExtension.activeScopeThickness": {
+      "title": "Active scope outline thickness (px)",
+      "type": "integer",
+      "default": 1,
+      "minimum": 1,
+      "maximum": 10,
+      "order": 36
+    },
     "visualStudioReadabilityExtension.depthColor1": {
       "title": "Depth 1 colour (hex) - cool grey",
       "type": "string",

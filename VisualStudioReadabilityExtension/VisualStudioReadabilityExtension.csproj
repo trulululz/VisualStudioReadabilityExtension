@@ -55,6 +55,7 @@
     <Compile Include="ReadabilityColorizerProvider.cs" />
     <Compile Include="ReadabilityColorizerPackage.cs" />
     <Compile Include="ReadabilityColorizerSettings.cs" />
+    <Compile Include="UnifiedSettingsReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

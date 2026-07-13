@@ -7,6 +7,7 @@ namespace VisualStudioReadabilityExtension
     {
         internal const int DepthColorCount = 7;
         internal const string DefaultBackgroundHex = "#000000"; // pure black
+        internal const string DefaultActiveScopeHex = "#FFFFFF"; // bright white outline
 
         private const string Prefix = "visualStudioReadabilityExtension.";
         internal const string SubsetPattern = Prefix + "*";
@@ -15,6 +16,9 @@ namespace VisualStudioReadabilityExtension
         internal const string KeyBackground = Prefix + "backgroundColor";
         internal const string KeyOpacity = Prefix + "opacityPercent";
         internal const string KeyDepthLevels = Prefix + "depthLevels";
+        internal const string KeyShowActiveScope = Prefix + "showActiveScope";
+        internal const string KeyActiveScopeColor = Prefix + "activeScopeColor";
+        internal const string KeyActiveScopeThickness = Prefix + "activeScopeThickness";
 
         internal static string KeyDepthColor(int index) => Prefix + "depthColor" + (index + 1);
 
@@ -25,6 +29,9 @@ namespace VisualStudioReadabilityExtension
             public int OpacityPercent = 15;
             public int DepthLevels = 0; // 0 = all depths
             public int[] DepthColors = DefaultDepthColors();
+            public bool ShowActiveScope = true;
+            public int ActiveScopeColor = ParseHex(DefaultActiveScopeHex, unchecked((int)0xFFFFFFFF));
+            public int ActiveScopeThickness = 1;
         }
 
         public static string[] DefaultDepthHex() => new[]
@@ -49,16 +56,42 @@ namespace VisualStudioReadabilityExtension
             return colors;
         }
 
-        /// <summary>Gets the unified settings manager, or null if the service is unavailable.</summary>
+        /// <summary>Diagnostic log written to %TEMP%\VsReadabilityExtension.log.</summary>
+        internal static readonly string LogPath =
+            System.IO.Path.Combine(System.IO.Path.GetTempPath(), "VsReadabilityExtension.log");
+
+        internal static void Log(string message)
+        {
+            try
+            {
+                System.IO.File.AppendAllText(LogPath,
+                    DateTime.Now.ToString("HH:mm:ss.fff") + "  " + message + Environment.NewLine);
+            }
+            catch
+            {
+                // Diagnostics must never throw into the editor.
+            }
+        }
+
         public static ISettingsManager GetManager(IServiceProvider serviceProvider)
         {
             if (serviceProvider == null)
             {
+                Log("GetManager: serviceProvider is null");
                 return null;
             }
 
             Type serviceType = ResolveSettingsServiceType();
-            return serviceType == null ? null : serviceProvider.GetService(serviceType) as ISettingsManager;
+            if (serviceType == null)
+            {
+                Log("GetManager: could not resolve SVsSettingsPersistenceManager type");
+                return null;
+            }
+
+            object service = serviceProvider.GetService(serviceType);
+            var manager = service as ISettingsManager;
+            Log($"GetManager: type={serviceType.Assembly.GetName().Name}; service={(service == null ? "null" : service.GetType().FullName)}; isISettingsManager={manager != null}");
+            return manager;
         }
 
         private static Type ResolveSettingsServiceType()
@@ -91,41 +124,35 @@ namespace VisualStudioReadabilityExtension
             return null;
         }
 
-        public static Model Load(ISettingsManager manager)
+        public static Model Load(IServiceProvider serviceProvider)
         {
             var model = new Model();
-            if (manager == null)
+
+            if (!UnifiedSettingsReader.TryInitialize(serviceProvider))
             {
+                Log("Load: unified settings reader unavailable -> returning all defaults");
                 return model;
             }
 
-            model.Enabled = Get(manager, KeyEnabled, true);
-            model.BackgroundColor = ParseHex(Get(manager, KeyBackground, DefaultBackgroundHex), unchecked((int)0xFF000000));
-            model.OpacityPercent = Clamp(Get(manager, KeyOpacity, 15), 1, 100);
-            model.DepthLevels = Math.Max(0, Get(manager, KeyDepthLevels, 0));
+            model.Enabled = UnifiedSettingsReader.GetBool(KeyEnabled, true);
+            model.BackgroundColor = ParseHex(UnifiedSettingsReader.GetString(KeyBackground, DefaultBackgroundHex), unchecked((int)0xFF000000));
+            model.OpacityPercent = Clamp(UnifiedSettingsReader.GetInt(KeyOpacity, 15), 1, 100);
+            model.DepthLevels = Math.Max(0, UnifiedSettingsReader.GetInt(KeyDepthLevels, 0));
 
             var def = DefaultDepthHex();
             var colors = new int[DepthColorCount];
             for (int i = 0; i < DepthColorCount; i++)
             {
-                string hex = Get(manager, KeyDepthColor(i), def[i]);
+                string hex = UnifiedSettingsReader.GetString(KeyDepthColor(i), def[i]);
                 colors[i] = ParseHex(hex, ParseHex(def[i], unchecked((int)0xFFFF9100)));
             }
             model.DepthColors = colors;
 
-            return model;
-        }
+            model.ShowActiveScope = UnifiedSettingsReader.GetBool(KeyShowActiveScope, true);
+            model.ActiveScopeColor = ParseHex(UnifiedSettingsReader.GetString(KeyActiveScopeColor, DefaultActiveScopeHex), unchecked((int)0xFFFFFFFF));
+            model.ActiveScopeThickness = Clamp(UnifiedSettingsReader.GetInt(KeyActiveScopeThickness, 1), 1, 10);
 
-        private static T Get<T>(ISettingsManager manager, string name, T fallback)
-        {
-            try
-            {
-                return manager.GetValueOrDefault(name, fallback);
-            }
-            catch
-            {
-                return fallback; // value stored with an incompatible type, etc.
-            }
+            return model;
         }
 
         public static int ParseHex(string hex, int fallback)
