@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.Utilities;
 namespace VisualStudioReadabilityExtension
 {
     [Export(typeof(IWpfTextViewCreationListener))]
-    [ContentType("code")]
+    [ContentType("CSharp")]
     [TextViewRole(PredefinedTextViewRoles.Document)]
     internal sealed class ReadabilityColorizerProvider : IWpfTextViewCreationListener
     {

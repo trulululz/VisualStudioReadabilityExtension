@@ -1,94 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <MinimumVisualStudioVersion>17.0</MinimumVisualStudioVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B1C0A7E2-5D3F-4A6B-9C8E-1234567890AB}</ProjectGuid>
-    <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VisualStudioReadabilityExtension</RootNamespace>
-    <AssemblyName>VisualStudioReadabilityExtension</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <GeneratePkgDefFile>true</GeneratePkgDefFile>
-    <UseCodebase>true</UseCodebase>
-    <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
-    <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
-    <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
-    <CopyBuildOutputToOutputDirectory>true</CopyBuildOutputToOutputDirectory>
-    <CopyOutputSymbolsToOutputDirectory>true</CopyOutputSymbolsToOutputDirectory>
-    <!-- F5 launches an experimental instance of VS with the extension loaded -->
-    <StartAction>Program</StartAction>
-    <StartProgram Condition="'$(DevEnvDir)' != ''">$(DevEnvDir)devenv.exe</StartProgram>
-    <StartArguments>/rootsuffix Exp</StartArguments>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ReadabilityColorizer.cs" />
-    <Compile Include="ReadabilityColorizerProvider.cs" />
-    <Compile Include="ReadabilityColorizerPackage.cs" />
-    <Compile Include="ReadabilityColorizerSettings.cs" />
-    <Compile Include="UnifiedSettingsReader.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="source.extension.vsixmanifest">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <!-- Unified settings manifest, deployed into the extension folder and referenced by the pkgdef. -->
-    <Content Include="UnifiedSettings\visualStudioReadabilityExtension.registration.json">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <!-- Extra pkgdef that registers the settings manifest (see the VsPackage asset in the manifest). -->
-    <Content Include="SettingsManifest.pkgdef">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="MessagePack">
-      <Version>3.1.8</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.VSSDK.BuildTools">
-      <Version>17.14.2094</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.SDK">
-      <Version>17.0.32112.339</Version>
-      <ExcludeAssets>runtime</ExcludeAssets>
-    </PackageReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- The VSIX packaging targets ship in the BuildTools package's tools\VSSDK folder and
+	<Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+	<PropertyGroup>
+		<MinimumVisualStudioVersion>17.0</MinimumVisualStudioVersion>
+		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+		<SchemaVersion>2.0</SchemaVersion>
+		<ProjectGuid>{B1C0A7E2-5D3F-4A6B-9C8E-1234567890AB}</ProjectGuid>
+		<ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+		<OutputType>Library</OutputType>
+		<AppDesignerFolder>Properties</AppDesignerFolder>
+		<RootNamespace>VisualStudioReadabilityExtension</RootNamespace>
+		<AssemblyName>VisualStudioReadabilityExtension</AssemblyName>
+		<TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+		<GeneratePkgDefFile>true</GeneratePkgDefFile>
+		<UseCodebase>true</UseCodebase>
+		<IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
+		<IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
+		<IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
+		<CopyBuildOutputToOutputDirectory>true</CopyBuildOutputToOutputDirectory>
+		<CopyOutputSymbolsToOutputDirectory>true</CopyOutputSymbolsToOutputDirectory>
+		<!-- F5 launches an experimental instance of VS with the extension loaded -->
+		<StartAction>Program</StartAction>
+		<StartProgram Condition="'$(DevEnvDir)' != ''">$(DevEnvDir)devenv.exe</StartProgram>
+		<StartArguments>/rootsuffix Exp</StartArguments>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>full</DebugType>
+		<Optimize>false</Optimize>
+		<OutputPath>bin\Debug\</OutputPath>
+		<DefineConstants>DEBUG;TRACE</DefineConstants>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<DebugType>pdbonly</DebugType>
+		<Optimize>true</Optimize>
+		<OutputPath>bin\Release\</OutputPath>
+		<DefineConstants>TRACE</DefineConstants>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+	</PropertyGroup>
+	<ItemGroup>
+		<Reference Include="PresentationCore" />
+		<Reference Include="PresentationFramework" />
+		<Reference Include="System" />
+		<Reference Include="System.ComponentModel.Composition" />
+		<Reference Include="System.Xaml" />
+		<Reference Include="WindowsBase" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Include="ReadabilityColorizer.cs" />
+		<Compile Include="ReadabilityColorizerProvider.cs" />
+		<Compile Include="ReadabilityColorizerPackage.cs" />
+		<Compile Include="ReadabilityColorizerSettings.cs" />
+		<Compile Include="UnifiedSettingsReader.cs" />
+		<Compile Include="Properties\AssemblyInfo.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="source.extension.vsixmanifest">
+			<SubType>Designer</SubType>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<!-- Unified settings manifest, deployed into the extension folder and referenced by the pkgdef. -->
+		<Content Include="Assets\README.txt" />
+		<Content Include="UnifiedSettings\visualStudioReadabilityExtension.registration.json">
+			<IncludeInVSIX>true</IncludeInVSIX>
+		</Content>
+		<!-- Extra pkgdef that registers the settings manifest (see the VsPackage asset in the manifest). -->
+		<Content Include="SettingsManifest.pkgdef">
+			<IncludeInVSIX>true</IncludeInVSIX>
+		</Content>
+		<Content Include="Assets\logo.jpg">
+			<IncludeInVSIX>true</IncludeInVSIX>
+			<Visible>false</Visible>
+		</Content>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="MessagePack">
+			<Version>3.1.8</Version>
+		</PackageReference>
+		<PackageReference Include="Microsoft.VSSDK.BuildTools">
+			<Version>17.14.2094</Version>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.VisualStudio.SDK">
+			<Version>17.0.32112.339</Version>
+			<ExcludeAssets>runtime</ExcludeAssets>
+		</PackageReference>
+	</ItemGroup>
+	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+	<!-- The VSIX packaging targets ship in the BuildTools package's tools\VSSDK folder and
        are NOT auto-imported by PackageReference, so import them explicitly. -->
-  <Import Project="$(PkgMicrosoft_VSSDK_BuildTools)\tools\VSSDK\Microsoft.VsSDK.targets" Condition="'$(PkgMicrosoft_VSSDK_BuildTools)' != '' And Exists('$(PkgMicrosoft_VSSDK_BuildTools)\tools\VSSDK\Microsoft.VsSDK.targets')" />
+	<Import Project="$(PkgMicrosoft_VSSDK_BuildTools)\tools\VSSDK\Microsoft.VsSDK.targets" Condition="'$(PkgMicrosoft_VSSDK_BuildTools)' != '' And Exists('$(PkgMicrosoft_VSSDK_BuildTools)\tools\VSSDK\Microsoft.VsSDK.targets')" />
 </Project>

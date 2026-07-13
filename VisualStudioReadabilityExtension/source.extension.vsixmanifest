@@ -4,6 +4,8 @@
     <Identity Id="VisualStudioReadabilityExtension.b1c0a7e2-5d3f-4a6b-9c8e-1234567890ab" Version="1.0.0" Language="en-US" Publisher="Tim Bouveng" />
     <DisplayName>VisualStudioReadabilityExtension</DisplayName>
     <Description xml:space="preserve">Shades the background of every { } code block by its nesting depth, making brace scopes easy to see at a glance. Colours and opacity are configurable under Tools &gt; Options.</Description>
+    <Icon>Assets\logo.jpg</Icon>
+    <PreviewImage>Assets\logo.jpg</PreviewImage>
     <Tags>editor, adornment, braces, blocks, colorize, readability</Tags>
   </Metadata>
   <Installation>
@@ -12,14 +14,14 @@
     </InstallationTarget>
   </Installation>
   <Dependencies>
-    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" Version="[4.5,)" d:Source="Manual" />
   </Dependencies>
   <Prerequisites>
-    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[17.0,19.0)" DisplayName="Visual Studio core editor" />
+    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" DisplayName="Visual Studio core editor" Version="[17.0,19.0)" />
   </Prerequisites>
   <Assets>
-    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
-    <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
-    <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="File" Path="SettingsManifest.pkgdef" />
+    <Asset Type="Microsoft.VisualStudio.MefComponent" Path="|%CurrentProject%|" d:Source="Project" d:ProjectName="%CurrentProject%" />
+    <Asset Type="Microsoft.VisualStudio.VsPackage" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" d:Source="Project" d:ProjectName="%CurrentProject%" />
+    <Asset Type="Microsoft.VisualStudio.VsPackage" Path="SettingsManifest.pkgdef" d:Source="File" />
   </Assets>
 </PackageManifest>
