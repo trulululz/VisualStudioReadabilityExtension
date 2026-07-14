@@ -47,6 +47,7 @@
 		<Reference Include="PresentationFramework" />
 		<Reference Include="System" />
 		<Reference Include="System.ComponentModel.Composition" />
+		<Reference Include="System.Design" />
 		<Reference Include="System.Xaml" />
 		<Reference Include="WindowsBase" />
 	</ItemGroup>
@@ -55,8 +56,19 @@
 		<Compile Include="ReadabilityColorizerProvider.cs" />
 		<Compile Include="ReadabilityColorizerPackage.cs" />
 		<Compile Include="ReadabilityColorizerSettings.cs" />
+		<Compile Include="PackageCommands.cs" />
+		<Compile Include="ReadabilityRuntimeState.cs" />
 		<Compile Include="UnifiedSettingsReader.cs" />
 		<Compile Include="Properties\AssemblyInfo.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<!-- Compiled into the Menus.ctmenu native resource referenced by ProvideMenuResource. -->
+		<VSCTCompile Include="ReadabilityColorizer.vsct">
+			<ResourceName>Menus.ctmenu</ResourceName>
+		</VSCTCompile>
+		<!-- Embedded into the command table by the VSCT compiler (href), so not shipped in the VSIX. -->
+		<Content Include="Resources\ToggleBlockColoring.png" />
+		<Content Include="Resources\ToggleActiveScope.png" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="source.extension.vsixmanifest">
@@ -73,7 +85,7 @@
 		<Content Include="SettingsManifest.pkgdef">
 			<IncludeInVSIX>true</IncludeInVSIX>
 		</Content>
-		<Content Include="Assets\logo.jpg">
+		<Content Include="Resources\logo.jpg">
 			<IncludeInVSIX>true</IncludeInVSIX>
 			<Visible>false</Visible>
 		</Content>

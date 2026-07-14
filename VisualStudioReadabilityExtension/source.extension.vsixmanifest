@@ -4,8 +4,8 @@
     <Identity Id="VisualStudioReadabilityExtension.b1c0a7e2-5d3f-4a6b-9c8e-1234567890ab" Version="1.0.0" Language="en-US" Publisher="Tim Bouveng" />
     <DisplayName>VisualStudioReadabilityExtension</DisplayName>
     <Description xml:space="preserve">Shades the background of every { } code block by its nesting depth, making brace scopes easy to see at a glance. Colours and opacity are configurable under Tools &gt; Options.</Description>
-    <Icon>Assets\logo.jpg</Icon>
-    <PreviewImage>Assets\logo.jpg</PreviewImage>
+    <Icon>Resources\logo.jpg</Icon>
+    <PreviewImage>Resources\logo.jpg</PreviewImage>
     <Tags>editor, adornment, braces, blocks, colorize, readability</Tags>
   </Metadata>
   <Installation>

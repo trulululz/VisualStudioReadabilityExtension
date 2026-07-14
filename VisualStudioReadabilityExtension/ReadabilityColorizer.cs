@@ -51,6 +51,13 @@ namespace VisualStudioReadabilityExtension
             _view.Caret.PositionChanged += OnCaretPositionChanged;
             _view.GotAggregateFocus += OnGotAggregateFocus;
             _view.Closed += OnClosed;
+            ReadabilityRuntimeState.Changed += OnRuntimeStateChanged;
+        }
+
+        // A toolbar toggle flipped an override — reload (picks up the override) and redraw.
+        private void OnRuntimeStateChanged(object sender, EventArgs e)
+        {
+            ReloadAndRedrawIfChanged();
         }
 
         private void EnsureSettingsManager()
@@ -83,6 +90,7 @@ namespace VisualStudioReadabilityExtension
             _view.Caret.PositionChanged -= OnCaretPositionChanged;
             _view.GotAggregateFocus -= OnGotAggregateFocus;
             _view.Closed -= OnClosed;
+            ReadabilityRuntimeState.Changed -= OnRuntimeStateChanged;
             if (_subset != null)
             {
                 _subset.SettingChangedAsync -= OnSettingChangedAsync;
@@ -138,15 +146,22 @@ namespace VisualStudioReadabilityExtension
                 model = new ReadabilityColorizerSettings.Model(); // fall back to defaults
             }
 
-            string signature = Signature(model);
+            // Publish the persisted values so the toolbar can show a checked state and seed its
+            // first toggle, then let any active toolbar override win for this session.
+            ReadabilityRuntimeState.LastPersistedEnabled = model.Enabled;
+            ReadabilityRuntimeState.LastPersistedActiveScope = model.ShowActiveScope;
+            bool effectiveEnabled = ReadabilityRuntimeState.EffectiveEnabled;
+            bool effectiveActiveScope = ReadabilityRuntimeState.EffectiveActiveScope;
+
+            string signature = Signature(model, effectiveEnabled, effectiveActiveScope);
             bool changed = signature != _settingsSignature;
             _settingsSignature = signature;
 
-            _enabled = model.Enabled;
+            _enabled = effectiveEnabled;
             _depthLevels = Math.Max(0, model.DepthLevels);
             _brushes = BuildBrushes(model);
 
-            _showActiveScope = model.ShowActiveScope;
+            _showActiveScope = effectiveActiveScope;
             _activeScopeThickness = model.ActiveScopeThickness;
             _activeScopeBrush = BuildActiveScopeBrush(model);
 
@@ -161,14 +176,14 @@ namespace VisualStudioReadabilityExtension
         }
 
         /// <summary>A cheap fingerprint of every setting, used to detect whether a reload changed anything.</summary>
-        private static string Signature(ReadabilityColorizerSettings.Model model)
+        private static string Signature(ReadabilityColorizerSettings.Model model, bool effectiveEnabled, bool effectiveActiveScope)
         {
             return string.Join("|",
-                model.Enabled,
+                effectiveEnabled,
                 model.BackgroundColor,
                 model.OpacityPercent,
                 model.DepthLevels,
-                model.ShowActiveScope,
+                effectiveActiveScope,
                 model.ActiveScopeColor,
                 model.ActiveScopeThickness,
                 string.Join(",", model.DepthColors));

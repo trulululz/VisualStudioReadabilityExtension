@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Command IDs from the shell (stdidcmd.h) and shell GUIDs (vsshlids.h). -->
+  <Extern href="stdidcmd.h" />
+  <Extern href="vsshlids.h" />
+
+  <Commands package="guidReadabilityPackage">
+
+    <!-- A custom, dockable toolbar that hosts the toggle button. -->
+    <Menus>
+      <Menu guid="guidReadabilityCmdSet" id="ReadabilityToolbar" type="Toolbar">
+        <CommandFlag>DefaultDocked</CommandFlag>
+        <Strings>
+          <ButtonText>Readability</ButtonText>
+          <CommandName>Readability</CommandName>
+        </Strings>
+      </Menu>
+    </Menus>
+
+    <!-- The button group that lives on the toolbar. -->
+    <Groups>
+      <Group guid="guidReadabilityCmdSet" id="ReadabilityToolbarGroup" priority="0x0000">
+        <Parent guid="guidReadabilityCmdSet" id="ReadabilityToolbar" />
+      </Group>
+    </Groups>
+
+    <Buttons>
+      <!-- Toggle 1: code-block depth colouring (the 'enabled' setting).
+           Checked state is driven at runtime; TextChanges lets the text update as it flips. -->
+      <Button guid="guidReadabilityCmdSet" id="cmdidToggleReadability" priority="0x0100" type="Button">
+        <Parent guid="guidReadabilityCmdSet" id="ReadabilityToolbarGroup" />
+        <Icon guid="guidImagesBlock" id="bmpBlock" />
+        <CommandFlag>TextChanges</CommandFlag>
+        <Strings>
+          <ButtonText>Toggle Code Block Coloring</ButtonText>
+          <ToolTipText>Turn code-block depth coloring on or off</ToolTipText>
+        </Strings>
+      </Button>
+
+      <!-- Toggle 2: active parenthesis-group outline (the 'showActiveScope' setting). -->
+      <Button guid="guidReadabilityCmdSet" id="cmdidToggleActiveScope" priority="0x0110" type="Button">
+        <Parent guid="guidReadabilityCmdSet" id="ReadabilityToolbarGroup" />
+        <Icon guid="guidImagesScope" id="bmpScope" />
+        <CommandFlag>TextChanges</CommandFlag>
+        <Strings>
+          <ButtonText>Toggle Parenthesis Grouping</ButtonText>
+          <ToolTipText>Turn the active parenthesis-group outline on or off</ToolTipText>
+        </Strings>
+      </Button>
+    </Buttons>
+
+    <Bitmaps>
+      <!-- 16x16 PNGs (with alpha) compiled into the command table at build time. -->
+      <Bitmap guid="guidImagesBlock" href="Resources\ToggleBlockColoring.png" usedList="bmpBlock" />
+      <Bitmap guid="guidImagesScope" href="Resources\ToggleActiveScope.png" usedList="bmpScope" />
+    </Bitmaps>
+
+  </Commands>
+
+  <Symbols>
+    <!-- Must match ReadabilityColorizerPackage.PackageGuidString. -->
+    <GuidSymbol name="guidReadabilityPackage" value="{c7f2a1d4-9b3e-4c5a-8d67-2f1e0a9b8c7d}" />
+
+    <GuidSymbol name="guidReadabilityCmdSet" value="{d3a5b8e1-4c7f-4e29-9a6b-2f8c1d0e3b4a}">
+      <IDSymbol name="ReadabilityToolbar" value="0x1000" />
+      <IDSymbol name="ReadabilityToolbarGroup" value="0x1050" />
+      <IDSymbol name="cmdidToggleReadability" value="0x0100" />
+      <IDSymbol name="cmdidToggleActiveScope" value="0x0101" />
+    </GuidSymbol>
+
+    <GuidSymbol name="guidImagesBlock" value="{a1b2c3d4-e5f6-4789-9abc-def012345678}">
+      <IDSymbol name="bmpBlock" value="0x0001" />
+    </GuidSymbol>
+
+    <GuidSymbol name="guidImagesScope" value="{b2c3d4e5-f6a7-4b89-9cde-f01234567890}">
+      <IDSymbol name="bmpScope" value="0x0001" />
+    </GuidSymbol>
+  </Symbols>
+
+</CommandTable>
