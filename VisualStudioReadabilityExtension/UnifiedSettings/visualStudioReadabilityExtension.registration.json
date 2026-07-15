@@ -1,12 +1,6 @@
 {
   "$schema": "registration.schema.json",
   "properties": {
-    "visualStudioReadabilityExtension.enabled": {
-      "title": "Enable block colouring",
-      "type": "boolean",
-      "default": true,
-      "order": 0
-    },
     "visualStudioReadabilityExtension.backgroundColor": {
       "title": "Code view background colour (hex, e.g. #000000)",
       "type": "string",
@@ -28,12 +22,6 @@
       "minimum": 0,
       "maximum": 100,
       "order": 30
-    },
-    "visualStudioReadabilityExtension.showActiveScope": {
-      "title": "Outline the active parenthesis pair ( ) containing the caret",
-      "type": "boolean",
-      "default": true,
-      "order": 32
     },
     "visualStudioReadabilityExtension.activeScopeColor": {
       "title": "Active scope outline colour (hex, e.g. #FFFFFF)",

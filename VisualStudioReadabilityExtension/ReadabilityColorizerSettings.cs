@@ -12,11 +12,9 @@ namespace VisualStudioReadabilityExtension
         private const string Prefix = "visualStudioReadabilityExtension.";
         internal const string SubsetPattern = Prefix + "*";
 
-        internal const string KeyEnabled = Prefix + "enabled";
         internal const string KeyBackground = Prefix + "backgroundColor";
         internal const string KeyOpacity = Prefix + "opacityPercent";
         internal const string KeyDepthLevels = Prefix + "depthLevels";
-        internal const string KeyShowActiveScope = Prefix + "showActiveScope";
         internal const string KeyActiveScopeColor = Prefix + "activeScopeColor";
         internal const string KeyActiveScopeThickness = Prefix + "activeScopeThickness";
 
@@ -134,7 +132,6 @@ namespace VisualStudioReadabilityExtension
                 return model;
             }
 
-            model.Enabled = UnifiedSettingsReader.GetBool(KeyEnabled, true);
             model.BackgroundColor = ParseHex(UnifiedSettingsReader.GetString(KeyBackground, DefaultBackgroundHex), unchecked((int)0xFF000000));
             model.OpacityPercent = Clamp(UnifiedSettingsReader.GetInt(KeyOpacity, 15), 1, 100);
             model.DepthLevels = Math.Max(0, UnifiedSettingsReader.GetInt(KeyDepthLevels, 0));
@@ -148,7 +145,6 @@ namespace VisualStudioReadabilityExtension
             }
             model.DepthColors = colors;
 
-            model.ShowActiveScope = UnifiedSettingsReader.GetBool(KeyShowActiveScope, true);
             model.ActiveScopeColor = ParseHex(UnifiedSettingsReader.GetString(KeyActiveScopeColor, DefaultActiveScopeHex), unchecked((int)0xFFFFFFFF));
             model.ActiveScopeThickness = Clamp(UnifiedSettingsReader.GetInt(KeyActiveScopeThickness, 1), 1, 10);
 

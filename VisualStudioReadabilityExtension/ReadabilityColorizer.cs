@@ -232,7 +232,7 @@ namespace VisualStudioReadabilityExtension
         {
             // Moving the caret doesn't relayout the view, so redraw here to keep the
             // active-scope outline following the caret. Cheap no-op when the feature is off.
-            if (_enabled && _showActiveScope)
+            if (_showActiveScope)
             {
                 RedrawBlocks();
             }
@@ -242,7 +242,7 @@ namespace VisualStudioReadabilityExtension
         {
             _layer.RemoveAllAdornments();
 
-            if (!_enabled)
+            if (!_enabled && !_showActiveScope)
             {
                 return;
             }
@@ -261,7 +261,9 @@ namespace VisualStudioReadabilityExtension
             double viewportLeft = _view.ViewportLeft;
 
             // Depth fills track curly-brace blocks; the active-scope outline tracks parentheses.
-            var braceBlocks = new List<Block>(FindBlocks(text, '{', '}'));
+            var braceBlocks = _enabled
+                ? new List<Block>(FindBlocks(text, '{', '}'))
+                : new List<Block>();
             Block? activeBlock = _showActiveScope
                 ? FindActiveBlock(new List<Block>(FindBlocks(text, '(', ')')))
                 : null;
